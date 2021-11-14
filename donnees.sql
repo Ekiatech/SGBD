@@ -11,7 +11,7 @@ INSERT INTO personnes (nom, prenom, adresse, commune)
 VALUES
 
 ('ALDERSON', 'Elliot', 'Rue Marie', 'Talence'),
-('WELLICK', 'TYRELL', 'Prison', 'Gradignan'),
+('WELLICK', 'Tyrell', 'Prison', 'Gradignan'),
 ('MOSS', 'Angela', 'Victoire', 'Bordeaux');
 
 

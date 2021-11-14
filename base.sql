@@ -111,6 +111,7 @@ CONSTRAINT PRIMARY KEY (id_utilisation)
 
 /** CREATION TABLE ETRE_ELOIGNE **/
 
+/*
 CREATE TABLE etre_eloigne (
 
 id_station INT NOT NULL,
@@ -122,7 +123,7 @@ distance INT NOT NULL,
 CONSTRAINT PRIMARY KEY (id_station, id_stationbis)
 
 );
-
+*/
 
 /** AJOUTE LES FOREIGN KEY **/
 
@@ -132,8 +133,8 @@ ALTER TABLE velos
 ALTER TABLE velos
       ADD CONSTRAINT fk_velos_id_station
       FOREIGN KEY (id_station)
-      REFERENCES stations(id_station)
-      ON DELETE SET NULL;
+      REFERENCES stations(id_station);
+      /*ON DELETE SET NULL;*/
 
 ALTER TABLE adherents
       ADD CONSTRAINT fk_adherent_personnes
@@ -151,6 +152,7 @@ ALTER TABLE utiliser
       FOREIGN KEY (id_adherent)
       REFERENCES adherents(id_adherent);
 
+/*
 ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_station
       FOREIGN KEY (id_station)
@@ -160,3 +162,4 @@ ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_stationbis
       FOREIGN KEY (id_stationbis)
       REFERENCES stations(id_station);
+*/
