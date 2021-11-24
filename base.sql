@@ -33,13 +33,13 @@ reference VARCHAR(100) NOT NULL,
 
 marque VARCHAR(100) NOT NULL,
 
-date_de_mise_en_service DATETIME NOT NULL,
+date_mise_en_service DATE NOT NULL,
 
 kilometrage INTEGER NOT NULL DEFAULT 0,
 
 etat VARCHAR(100) NOT NULL DEFAULT 'Bon',
 
-niveau_de_charge_batterie INTEGER NOT NULL DEFAULT 100
+batterie INTEGER NOT NULL DEFAULT 100
 
 );
 
@@ -52,9 +52,9 @@ id_station INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
 adresse VARCHAR(100) NOT NULL,
 
-commune VARCHAR(100),
+commune VARCHAR(100) NOT NULL,
 
-nombre_de_borne INTEGER NOT NULL
+nombre_bornes INTEGER NOT NULL
 
 );
 
@@ -66,7 +66,7 @@ id_adherent INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
 id_personne INTEGER NOT NULL,
 
-date_debut_adhesion DATE NOT NULL,
+date_debut_adhesion DATETIME NOT NULL,
 
 date_fin_adhesion DATE
 
@@ -90,11 +90,11 @@ commune VARCHAR(100) NOT NULL
 
 /** CREATION TABLE UTILISER **/
 
-CREATE TABLE utiliser (
+CREATE TABLE utilisations (
 
 id_utilisation INT NOT NULL AUTO_INCREMENT,
 
-id_velo INT,
+id_velo INT NOT NULL,
 
 id_adherent INT,
 
@@ -142,13 +142,13 @@ ALTER TABLE adherents
       REFERENCES personnes(id_personne);
 
       
-ALTER TABLE utiliser
-      ADD CONSTRAINT fk_utiliser_id_velo
+ALTER TABLE utilisations
+      ADD CONSTRAINT fk_utilisations_id_velo
       FOREIGN KEY (id_velo)
       REFERENCES velos(id_velo);  
 
-ALTER TABLE utiliser
-      ADD CONSTRAINT fk_utiliser_id_adherent
+ALTER TABLE utilisations
+      ADD CONSTRAINT fk_utilisations_id_adherent
       FOREIGN KEY (id_adherent)
       REFERENCES adherents(id_adherent);
 

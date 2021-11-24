@@ -1,7 +1,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 TRUNCATE TABLE velos;
 TRUNCATE TABLE stations;
-TRUNCATE TABLE utiliser;
+TRUNCATE TABLE utilisations;
 TRUNCATE TABLE adherents;
 TRUNCATE TABLE personnes;
 SET FOREIGN_KEY_CHECKS=1;
@@ -15,14 +15,14 @@ VALUES
 ('MOSS', 'Angela', 'Victoire', 'Bordeaux');
 
 
-INSERT INTO stations (adresse, commune, nombre_de_borne)
+INSERT INTO stations (adresse, commune, nombre_bornes)
 VALUES
 
 ('Rue Marie', 'Talence', 10),
 ('Prison', 'Gradignan', 20);
 
 
-INSERT INTO velos (reference, marque, date_de_mise_en_service)
+INSERT INTO velos (reference, marque, date_mise_en_service)
 VALUES
 
 ('BG-230', 'Artengo', now()),
@@ -30,15 +30,15 @@ VALUES
 ('BG-240', 'Artengo', now()),
 ('BG-250', 'Artengo', now());
 
-UPDATE velos SET niveau_de_charge_batterie = 75 WHERE id_velo = 3; 
-UPDATE velos SET niveau_de_charge_batterie = 40 WHERE id_velo = 4; 
+UPDATE velos SET batterie = 75 WHERE id_velo = 3; 
+UPDATE velos SET batterie = 40 WHERE id_velo = 4; 
 
 INSERT INTO adherents (id_personne, date_debut_adhesion)
 VALUES
 
 ('2', now());
 
-INSERT INTO utiliser(id_velo, id_adherent, date_debut, kilometrage_debut)
+INSERT INTO utilisations(id_velo, id_adherent, date_debut, kilometrage_debut)
 VALUES
 
 (2, 1, now(), 10);
