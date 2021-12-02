@@ -66,7 +66,7 @@ id_adherent INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
 id_personne INTEGER NOT NULL,
 
-date_debut_adhesion DATETIME NOT NULL,
+date_debut_adhesion DATE NOT NULL,
 
 date_fin_adhesion DATE
 
@@ -111,7 +111,7 @@ CONSTRAINT PRIMARY KEY (id_utilisation)
 
 /** CREATION TABLE ETRE_ELOIGNE **/
 
-/*
+
 CREATE TABLE etre_eloigne (
 
 id_station INT NOT NULL,
@@ -123,12 +123,12 @@ distance INT NOT NULL,
 CONSTRAINT PRIMARY KEY (id_station, id_stationbis)
 
 );
-*/
+
 
 /** AJOUTE LES FOREIGN KEY **/
 
 ALTER TABLE velos
-      ADD id_station INT NOT NULL DEFAULT 1;
+      ADD id_station INT DEFAULT 1;
 
 ALTER TABLE velos
       ADD CONSTRAINT fk_velos_id_station
@@ -152,7 +152,6 @@ ALTER TABLE utilisations
       FOREIGN KEY (id_adherent)
       REFERENCES adherents(id_adherent);
 
-/*
 ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_station
       FOREIGN KEY (id_station)
@@ -162,4 +161,3 @@ ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_stationbis
       FOREIGN KEY (id_stationbis)
       REFERENCES stations(id_station);
-*/
