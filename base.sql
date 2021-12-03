@@ -98,11 +98,15 @@ id_velo INT NOT NULL,
 
 id_adherent INT,
 
+id_station INT NOT NULL,
+
 date_debut DATE NOT NULL,
 
 date_fin DATE,
 
 kilometrage_debut INT NOT NULL,
+
+kilometrage_fin INT,
 
 CONSTRAINT PRIMARY KEY (id_utilisation)
 
