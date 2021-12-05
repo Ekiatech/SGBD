@@ -11,14 +11,14 @@
         
         <!-- Type de la requete -->
         <div>
-            <h1>Nom de la requete</h1>
+            <h1>Listes des stations  pr&eacute;sentes dans une commune</h1>
         </div>
         
         <!-- Récupération des données -->
         <form method = "post">
             <p>
-				<label>objectif de la requete :</label>
-                <input type="text" name="nom_variable" />
+				<label>Nom de la commune :</label>
+                <input type="text" name="commune" />
                 <input type="submit" value="Valider" />
             </p>
         </form>
@@ -27,25 +27,25 @@
         <!-- Requete -->
         <?php 
         
-        if (!empty($_POST['nom_variable'])) 
+        if (!empty($_POST['commune'])) 
         {
-			echo "nom des donnees retourne";
+			echo "Station pr&eacute;sentes &agrave; ".$_POST['commune'];
 		?>
 		<table>
 			<tr>
-		        <th>cathegorie1</th>
-		        <th>cathegorie2</th>
+		        <th>id_station</th>
+		        <th>adresse</th>
 			</tr>
 
 		<?php
 			include "connect.php"; 	
-            $requete = "requete";
+            $requete = "SELECT * FROM stations WHERE commune = '".$_POST['commune']."';";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
-				while ($var =  $res->fetch_assoc()) {
-					echo "\t".'<tr><td>'.$var['cathegorie1'].'</td>';
-					echo '<td>'.$var['cathegorie2'].'</td>';
+				while ($station =  $res->fetch_assoc()) {
+					echo "\t".'<tr><td>'.$station['id_station'].'</td>';
+					echo '<td>'.$station['adresse'].'</td>';
 					echo '</tr>'."\n";
                 }
 		

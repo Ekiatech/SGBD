@@ -11,41 +11,42 @@
         
         <!-- Type de la requete -->
         <div>
-            <h1>Nom de la requete</h1>
+            <h1>Listes des v&eacute;los  pr&eacute;sent &agrave; une station</h1>
         </div>
         
         <!-- Récupération des données -->
+        
         <form method = "post">
             <p>
-				<label>objectif de la requete :</label>
-                <input type="text" name="nom_variable" />
+				<label>Num&eacute;ro de la station :</label>
+                <input type="text" name="id_station" />
                 <input type="submit" value="Valider" />
             </p>
         </form>
+		
 
-        
-        <!-- Requete -->
+		<!-- Requete -->
         <?php 
         
-        if (!empty($_POST['nom_variable'])) 
+        if (!empty($_POST['id_station'])) 
         {
-			echo "nom des donnees retourne";
+			echo "V&eacute;los  pr&eacute;sent &agrave; la station num&eacute;ro ".$_POST['prenom']." :\n";
 		?>
 		<table>
 			<tr>
-		        <th>cathegorie1</th>
-		        <th>cathegorie2</th>
+		        <th>id</th>
+		        <th>marque</th>
 			</tr>
 
 		<?php
 			include "connect.php"; 	
-            $requete = "requete";
+            $requete = "SELECT velos.* FROM velos INNER JOIN stations on velos.id_station = stations.id_station WHERE stations.id_station=".$_POST['prenom'].";";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
-				while ($var =  $res->fetch_assoc()) {
-					echo "\t".'<tr><td>'.$var['cathegorie1'].'</td>';
-					echo '<td>'.$var['cathegorie2'].'</td>';
+				while ($velo =  $res->fetch_assoc()) {
+					echo "\t".'<tr><td>'.$velo['id_velo'].'</td>';
+					echo '<td>'.$velo['marque'].'</td>';
 					echo '</tr>'."\n";
                 }
 		
@@ -54,7 +55,7 @@
         } 
         
          ?>
-         </table>    
+         </table>
    </body>
 </html>
 

@@ -11,7 +11,7 @@
 			<input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/velos_station.php';" value="" />   Listes des v&eacute;los  pr&eacute;sent &agrave; une station
 		</div>
 		<div>
-			<input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/station_commune.php';" value="" />   Listes des stations dans une commune
+			<input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/velos_station.php';" value="" />   Listes des stations dans une commune
 		</div>
 		<div>
 			<input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/velos_station.php';" value="" />   Statistiques
