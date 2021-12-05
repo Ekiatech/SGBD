@@ -16,8 +16,14 @@ SELECT * FROM adherents, personnes where adherents.id_personne = personnes.id_pe
 SELECT velos.* FROM velos INNER JOIN stations on velos.id_station = stations.id_station ORDER BY id_station;
 
 /** LISTE VELOS EN COURS D'UTILISATION **/
+SELECT id_utilisation, id_velo, id_adherent, date_debut, date_fin, kilometrage_debut, kilometrage_fin FROM velos INNER JOIN utilisations USING(id_velo) WHERE date_fin IS NULL ORDER BY id_utilisation;
 
-SELECT velos.* FROM velos INNER JOIN stations on velos.id_station = stations.id_station ORDER BY id_station;
+
+INSERT INTO utilisations(id_velo, id_adherent, date_debut, kilometrage_debut, kilometrage_fin)
+VALUES
+(2, 1, now(), 10, 40);
+
+
 
 /** LISTE DES STATIONS DANS UNE COMMUNE DONNÉE **/
 
@@ -56,6 +62,10 @@ SELECT count(*) as velos_disponibles, commune from velos INNER JOIN stations on 
 
 select * from utilisations WHERE id_adherent = ;
 
+/* Nombre de km fait */
+select SUM(kilometrage_fin - kilometrage_debut) from utilisations WHERE id_adherent = ;
+
+
 
 /** Pour ajouter utilisateur **/
 
@@ -73,4 +83,21 @@ VALUES
 create view Station1 as ( SELECT * FROM etre_eloigne where id_station = );
 
 create view Station2 as ( SELECT * FROM etre_eloigne where id_stationbis = ); 
+
+/** Ordonner par date **/
+SELECT id_velo, kilometrage_debut, kilometrage_fin, date_debut from utilisations where id_velo = id_velo ORDER BY id_velo, date_debut;
+
+SELECT (kilometrage_fin - kilometrage_debut) from utilisations WHERE id_velo = 2 AND kilometrage_debut = 10;
+
+
+/** Avoir la liste des utilisations par mois, semaine et etc... **/
+ CREATE VIEW dates_utilisations SELECT *, weekofyear(date_debut) as week, month(date_debut) as month, year(date_debut) as year from utilisations ORDER BY date_debut;
+
+/** Avoir le nombre de km effectués pour toutes les années (1 année = 1 ligne) **/
+SELECT SUM(kilometrage_fin-kilometrage_debut) from date_utilisations GROUP BY year;
+
+
+/** Affiche nomnbre de km parcourus pour chaque adherent en foncton de la semaine **/
+SELECT SUM(kilometrage_fin-kilometrage_debut), id_adherent, week from date_utilisations GROUP BY week, id_adherent;
+
 

@@ -4,6 +4,7 @@ TRUNCATE TABLE stations;
 TRUNCATE TABLE utilisations;
 TRUNCATE TABLE adherents;
 TRUNCATE TABLE personnes;
+TRUNCATE TABLE etre_eloigne;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO personnes (nom, prenom, adresse, commune)
@@ -63,20 +64,23 @@ VALUES
 (1, SUBDATE(now(),30));
 
 
-INSERT INTO utilisations(id_velo, id_adherent, date_debut, kilometrage_debut)
+INSERT INTO utilisations(id_velo, id_adherent, date_debut, date_fin, kilometrage_debut, kilometrage_fin)
 VALUES
 
 /*(1, 1, SUBDATE(now(), 2), 0);*//*PAS POSSIBLE PLUS ADHERENT*/
-(2, 1, SUBDATE(now(), 10), 10),
-(2, 2, SUBDATE(now(), 8), 40),
-(3, 2, SUBDATE(now(), 8), 5),
-(4, 1, SUBDATE(now(), 8), 2),
-(5, 1, SUBDATE(now(), 7), 0),
-(2, 1, SUBDATE(now(), 7), 60),
-(2, 1, SUBDATE(now(), 6), 65),
-(2, 1, SUBDATE(now(), 5), 150),
-(3, 4, SUBDATE(now(), 3), 25),
-(4, 5, SUBDATE(now(), 2), 8);
+(2, 1, SUBDATE(now(), 10), ADDDATE(SUBDATE(now(), 10), INTERVAL 40 MINUTE), 10, 40),
+(2, 2, SUBDATE(now(), 8), ADDDATE(SUBDATE(now(), 8), INTERVAL 40 MINUTE), 40, 60),
+(2, 1, SUBDATE(now(), 7), ADDDATE(SUBDATE(now(), 7), INTERVAL 40 MINUTE), 60, 65),
+(2, 1, SUBDATE(now(), 6), ADDDATE(SUBDATE(now(), 6), INTERVAL 40 MINUTE), 65, 150),
+(2, 1, SUBDATE(now(), 5), ADDDATE(SUBDATE(now(), 5), INTERVAL 40 MINUTE), 150, 162),
+
+(3, 2, SUBDATE(now(), 8), ADDDATE(SUBDATE(now(), 8), INTERVAL 40 MINUTE),5, 25),
+(3, 4, SUBDATE(now(), 3), ADDDATE(SUBDATE(now(), 3), INTERVAL 40 MINUTE),25, 30),
+
+(4, 1, SUBDATE(now(), 8), ADDDATE(SUBDATE(now(), 8), INTERVAL 40 MINUTE), 2, 8),
+(4, 5, SUBDATE(now(), 2), ADDDATE(SUBDATE(now(), 2), INTERVAL 40 MINUTE), 8, 11),
+
+(5, 1, SUBDATE(now(), 7), ADDDATE(SUBDATE(now(), 7), INTERVAL 40 MINUTE), 0, 12);
 
 INSERT INTO etre_eloigne (id_station, id_stationbis, distance)
 VALUES

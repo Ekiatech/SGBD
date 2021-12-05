@@ -98,11 +98,9 @@ id_velo INT NOT NULL,
 
 id_adherent INT,
 
-id_station INT NOT NULL,
+date_debut DATETIME NOT NULL,
 
-date_debut DATE NOT NULL,
-
-date_fin DATE,
+date_fin DATETIME,
 
 kilometrage_debut INT NOT NULL,
 
@@ -131,6 +129,8 @@ CONSTRAINT PRIMARY KEY (id_station, id_stationbis)
 
 /** AJOUTE LES FOREIGN KEY **/
 
+
+
 ALTER TABLE velos
       ADD id_station INT DEFAULT 1;
 
@@ -140,11 +140,23 @@ ALTER TABLE velos
       REFERENCES stations(id_station);
       /*ON DELETE SET NULL;*/
 
+ALTER TABLE velos
+      ADD CONSTRAINT check_baterry_sup
+      CHECK (batterie <= 100);
+
+ALTER TABLE velos
+      ADD CONSTRAINT check_baterry_inf
+      CHECK (batterie >= 0);
+
+
+ALTER TABLE etre_eloigne
+      ADD CONSTRAINT check_station_stationbis
+      CHECK (id_station < id_stationbis);
+      
 ALTER TABLE adherents
       ADD CONSTRAINT fk_adherent_personnes
       FOREIGN KEY (id_personne)
       REFERENCES personnes(id_personne);
-
       
 ALTER TABLE utilisations
       ADD CONSTRAINT fk_utilisations_id_velo
@@ -165,3 +177,31 @@ ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_stationbis
       FOREIGN KEY (id_stationbis)
       REFERENCES stations(id_station);
+
+
+/*CREATE FUNCTION CheckFunction()
+returns int
+as begin
+   return (NULL = (SELECT date_fin FROM adherents WHERE adherents.id_adherent = utilisations.id_adherent))
+end
+
+ALTER TABLE utilisations
+      ADD CONSTRAINT check_adherents
+      CHECK (CheckFunction() == 1);
+  */    
+/*CREATE TRIGGER utilisation_adherent
+       BEFORE INSERT ON utilisations;
+       FOR EACH ROW
+       BEGIN
+        IF (NULL != (SELECT date_fin FROM adherents WHERE adherents.id_adherent = OLD.id_adherent))
+       END
+*/
+
+CREATE TRIGGER utilisations_velos_before
+       AFTER INSERT ON utilisations
+       FOR EACH ROW
+       UPDATE velos SET id_station = NULL
+       WHERE velos.id_velo = NEW.id_velo AND NEW.date_fin IS NULL;
+       
+/*utilisations SET date_fin = now() WHERE OLD.id_velo = utilisations.id_velo AND utilisations.date_fin = NULL;
+*/
