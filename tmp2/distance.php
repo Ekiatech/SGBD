@@ -1,10 +1,10 @@
 <html>
    <head>
-      <title>Page exemple</title>
+      <title>Ma première page HTML</title>
+      <meta http-equiv="content-type" content="text/html;charset=utf-8">
    </head>
    <body>
-
-        <!-- Bouton retour -->
+      <!-- Bouton retour -->
 		
 		<form method = "post">
             <p>
@@ -20,16 +20,22 @@
 		}
         ?>
         
-        <!-- Type de la requete -->
+         <!-- Type de la requete -->
         <div>
-            <h1>Listes des stations  pr&eacute;sentes dans une commune</h1>
+            <h1>Distance entre deux stations</h1>
         </div>
         
         <!-- Récupération des données -->
         <form method = "post">
             <p>
-				<label>Nom de la commune :</label>
+				<label>Id de la premi&egrave;re station :</label>
                 <input type="text" name="commune" />
+            </p>
+            <p>
+				<label>Id de la deuxi&egrave;me station:</label>
+                <input type="text" name="commune" />
+            </p>
+            <p>
                 <input type="submit" value="Valider" />
                 <input type="submit" value="?" name="help" />
             </p>
@@ -37,24 +43,28 @@
 
         
         <!-- Requete -->
+        
         <?php 
         
-        if (!empty($_POST['help'])) {
+		
+		if (!empty($_POST['help'])) {
 
 			echo "<h3>Listes des stations possibles</h3>";
-			echo "<b>Communes</b><br>";
+			echo "<b>ID_station</b><br>";
 			include "connect.php"; 	
-            $requete = "SELECT DISTINCT commune from stations GROUP BY commune; ";
+            $requete = "SELECT * FROM stations;";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
 				while ($station =  $res->fetch_assoc()) {
-					echo $station['commune']."<br>";
+					echo $station['id_station']."<br>";
 				}
 		
              //fermeture de la connexion avec la base
              $connection->close();
+             echo "<h4> Attention - Id 1 doit &ecirc;tre inferieur &agrave; Id 2</h4>";
 		}
+         
         
         if (!empty($_POST['commune'])) 
         {
@@ -83,7 +93,6 @@
         } 
         
          ?>
-         </table>    
+         </table>
    </body>
-</html>
-
+</html> 
