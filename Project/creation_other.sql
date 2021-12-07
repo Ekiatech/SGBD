@@ -154,3 +154,46 @@ BEGIN
 SELECT * FROM utilisations WHERE id_adherent = p_id_adherent;
 END |
 DELIMITER ;
+
+/** AVOIR LA LISTE D'UTILISATION PAR SEMAINE/MOIS/ANNEE **/
+CREATE VIEW dates_utilisations AS SELECT *, weekofyear(date_debut) as weeks, month(date_debut) as months, year(date_debut) as years from utilisations ORDER BY date_debut;
+
+/** NOMBRE DE KM PARCOURUS PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
+DELIMITER |
+CREATE PROCEDURE nbr_km_parcourus_semaine (IN p_id_adherent INT)
+BEGIN
+SELECT SUM(kilometrage_parcouru), id_adherent, weeks from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY weeks, id_adherent;
+END |
+DELIMITER ;
+
+DELIMITER |
+CREATE PROCEDURE nbr_km_parcourus_mois (IN p_id_adherent INT)
+BEGIN
+SELECT SUM(kilometrage_parcouru), id_adherent, months from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY months, id_adherent;
+END |
+DELIMITER ;
+
+
+DELIMITER |
+CREATE PROCEDURE nbr_km_parcourus_annee (IN p_id_adherent INT)
+BEGIN
+SELECT SUM(kilometrage_parcouru), id_adherent, years from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY years, id_adherent;
+END |
+DELIMITER ;
+
+/** NOMBRE HEURE PARCOURUES PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
+DELIMITER |
+CREATE PROCEDURE nbr_h_adh_annee (IN p_id_adherent INT)
+BEGIN
+SELECT SUM(TIMEDIFF(date_fin, date_debut)), id_adherent, years from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY years, id_adherent;
+END |
+DELIMITER ;
+
+/** Moyene des distances parcourues par les vélos sur une semaine **/
+
+DELIMITER |
+CREATE PROCEDURE nbr_km_parcourus_semaine_all (IN p_weeks INT)
+BEGIN
+SELECT SUM(kilometrage_parcouru) from dates_utilisations WHERE weeks = p_weeks GROUP BY weeks;
+END |
+DELIMITER ;
