@@ -17,9 +17,6 @@ SELECT * FROM stations INNER JOIN velos USING(id_station) ORDER BY id_station;
 
 CALL info_velo_station(p_id_velo INT)
 
-/** CLASSEMENT MEILLEUR VELO (BATTERIE) TOTALE **/
-SELECT * FROM velos ORDER BY batterie;
-
 /** CLASSEMENT MEILLEUR VELO (BATTERIE) NON UTILISEE **/
 SELECT * FROM velos WHERE id_station IS NOT NULL ORDER BY batterie
 
@@ -44,11 +41,13 @@ CALL rank_start_station(p_id_adherent INT)
 /** CLASSEMENT STATION_FIN PLUS UTILISEE **/
 CALL rank_end_station(p_id_adherent INT)
 
-
 /** DATE DE FIN D'ABONNEMENT **/
 CALL date_end_adhesion(p_id_adherent INT)
 
-
 /** DUREE ABONNEMENT **/
 CALL duration_adhesion(p_id_adherent INT)
+
+/** SE REABONNER **/
+CALL se_reabonner(p_id_adherent INT)
+
 

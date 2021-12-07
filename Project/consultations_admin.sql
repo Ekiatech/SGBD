@@ -4,21 +4,8 @@
 SELECT * FROM adherents WHERE date_fin_adhesion < NOW();
 
 /** INFORMATION SUR 1 ADHERENT **/
-
 CALL info_adherent(p_id_adherent INT)
 
-/*select * from adherents 
-where id_adherent in (
-  select b.id_adherent from (
-    select a.*, count(a.ID_VELO) as nombre from (
-      select * from utilisations
-      where DATE(date_debut) = DATE(NOW())
-      group by id_adherent, id_velo
-    )a
-    group by id_adherent
-  )b
-  where nombre > 1
-);*/
 
 /** VELOS EN COURS D'UTILISATION **/
 SELECT * FROM velos WHERE id_station IS NULL;
@@ -86,3 +73,21 @@ SELECT dayname, (km / nbr_adh) as nbr_km_moyenne_par_adherent FROM (SELECT count
 END |
 DELIMITER ;
 */
+
+/** RAPPORT RENOUVELLEMENT ABONNEMENT **/
+Nombre pers renouvele / nombre personne
+
+CREATE VIEW nbr_pers_renew as SELECT count(nbr_renew) as nbr_pers_renew FROM (SELECT nbr_renew FROM (SELECT count(*) as nbr_renew FROM adherents GROUP BY id_personne) as al WHERE nbr_renew > 1) as a;
+
+SELECT nbr_pers_renew FROM nbr_pers_renew;
+
+SELECT count(id_personne) as nbr_pers FROM personnes;
+
+x
+/** CLASSEMENT TRAJET PLUS EFFECTUE **/
+SELECT id_station_debut, id_station_fin, count(*) as nbr_de_fois_effectue from utilisations GROUP BY id_station_debut, id_station_fin;
+
+
+/** LISTE DES ADHERENTS AYANT EMPRUNTE AU MOINS 2 VELOS DIFFERENTS SUR UNE MEME JOURNEE **/
+SELECT id_adherent FROM (SELECT id_adherent, count(*) as nbr FROM (SELECT id_adherent FROM utilisations WHERE DATE(date_debut) = DATE(NOW()) GROUP BY id_adherent, id_velo) as d GROUP BY id_adherent) as c WHERE nbr > 1;
+

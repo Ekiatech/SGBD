@@ -209,7 +209,7 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE exist_adherent(IN p_id_adherent INT)
 BEGIN
-        SET @id = 1;
+        SET @id = p_id_adherent;
         IF @id NOT IN (SELECT id_adherent FROM adherents)
         THEN
           SIGNAL SQLSTATE '45000'
@@ -419,3 +419,75 @@ END IF;
 UPDATE velos SET id_station = p_id_station WHERE id_velo = p_id_velo;
 END |
 DELIMITER ;
+
+
+/** REABONNEMENT **/
+DELIMITER |
+CREATE PROCEDURE se_reabonner(IN p_id_adherent INT)
+BEGIN
+       IF p_id_adherent NOT IN (SELECT id_adherent FROM adherents) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Vous ne vous etes encore jamais abonne au service';
+END IF;
+
+       IF DATE(NOW()) < (SELECT date_fin_adhesion FROM adherents WHERE id_adherent = p_id_adherent)
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Votre abonnement est encore en cours. Impossible de se reabonner';
+END IF;
+
+    SELECT id_personne INTO @id_personne FROM adherents WHERE id_adherent = p_id_adherent;
+    INSERT INTO adherents (id_personne, date_debut_adhesion, date_fin_adhesion)
+    VALUES
+    (@id_personne, NOW(), ADDDATE(NOW(), INTERVAL 6 MONTH));
+END |
+DELIMITER ;
+
+
+/** TAUX DE REABONNEMENT **/
+DELIMITER |
+CREATE PROCEDURE taux_reabonnement()
+BEGIN
+       SELECT nbr_pers_renew INTO @nbr_pers_renew FROM nbr_pers_renew;
+       SELECT count(id_adherent) as nbr_pers INTO @nbr_pers FROM adherents WHERE date_fin_adhesion < NOW();
+       SELECT @nbr_pers_renew / @nbr_pers;
+
+END |
+DELIMITER;
+
+/** RECHARGER BATTERIE **/
+DELIMITER |
+CREATE PROCEDURE recharge_batterie(IN p_id_velo INT, IN p_batterie INT)
+BEGIN
+       IF p_id_velo NOT IN (SELECT id_velo FROM velos) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'id_velo invalide';
+END IF;
+
+    SET @batterie = 0;
+    SELECT batterie INTO @batterie FROM velos WHERE id_velo = p_id_velo;
+    IF @batterie + p_batterie > 100
+    THEN
+        UPDATE velos SET batterie = 100 WHERE id_velo = p_id_velo;
+    ELSE
+        UPDATE velos SET batterie = batterie + p_batterie WHERE id_velo = p_id_velo;
+    END IF;
+END |
+DELIMITER ;
+
+/** CLASSEMENT MEILLEUR VELO (BATTERIE) NON UTILISEE **/
+DELIMITER |
+CREATE PROCEDURE rank_velos_station(IN p_id_station INT)
+BEGIN
+       IF p_id_station NOT IN (SELECT id_station FROM stationss) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'id_station invalide';
+END IF;
+
+  SELECT * FROM velos WHERE id_station IS NOT NULL AND id_station = p_id_station ORDER BY batterie;
+END |
+DELIMITER ;
+
