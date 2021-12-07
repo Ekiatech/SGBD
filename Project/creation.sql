@@ -132,8 +132,8 @@ ALTER TABLE velos
 ALTER TABLE velos
       ADD CONSTRAINT fk_velos_id_station
       FOREIGN KEY (id_station)
-      REFERENCES stations(id_station);
-      /*ON DELETE SET NULL;*/
+      REFERENCES stations(id_station)
+      ON DELETE SET NULL;
 
 ALTER TABLE velos
       ADD CONSTRAINT check_baterry_sup
@@ -155,16 +155,19 @@ ALTER TABLE adherents
       ADD CONSTRAINT fk_adherent_personnes
       FOREIGN KEY (id_personne)
       REFERENCES personnes(id_personne);
+
       
 ALTER TABLE utilisations
       ADD CONSTRAINT fk_utilisations_id_velo
       FOREIGN KEY (id_velo)
-      REFERENCES velos(id_velo);  
+      REFERENCES velos(id_velo);
+
 
 ALTER TABLE utilisations
       ADD CONSTRAINT fk_utilisations_id_adherent
       FOREIGN KEY (id_adherent)
-      REFERENCES adherents(id_adherent);
+      REFERENCES adherents(id_adherent)
+      ON DELETE SET NULL;
 
 ALTER TABLE etre_eloigne
       ADD CONSTRAINT fk_etre_eloigne_station
@@ -179,9 +182,12 @@ ALTER TABLE etre_eloigne
 ALTER TABLE utilisations
       ADD CONSTRAINT fk_utilisations_id_station_debut
       FOREIGN KEY (id_station_debut)
-      REFERENCES stations(id_station);
+      REFERENCES stations(id_station)
+      ON DELETE SET NULL;
 
 ALTER TABLE utilisations
       ADD CONSTRAINT fk_utilisations_id_station_fin
       FOREIGN KEY (id_station_fin)
-      REFERENCES stations(id_station);
+      REFERENCES stations(id_station)
+      ON DELETE SET NULL;
+
