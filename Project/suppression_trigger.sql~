@@ -1,4 +1,0 @@
-DROP trigger utilisations_velos_before;
-DROP trigger utilisations_velos_after;
-DROP trigger utilisations_velos;
-DROP trigger utilisations_velos_after_use;
