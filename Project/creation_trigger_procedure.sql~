@@ -1,0 +1,11 @@
+CREATE TRIGGER utilsiations_velos_before
+       BEFORE INSERT ON ulisations
+       FOR EACH ROW
+       IF (NULL != (SELECT date_fin FROM adherents WHERE NEW.id_adherent = adherents.id_adherent;))
+       
+
+CREATE TRIGGER utilisations_velos_after
+       AFTER INSERT ON utilisations
+       FOR EACH ROW
+       UPDATE velos SET id_station = NULL
+       WHERE velos.id_velo = NEW.id_velo AND NEW.date_fin IS NULL;
