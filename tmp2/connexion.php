@@ -77,6 +77,20 @@
      </form>
 	 
 
+	 <?php
+		if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['adresse']) && !empty($_POST['commune'])) 
+        {
+			include "connect.php"; 	
+            $requete = "CALL ajout_personne(".$_POST['nom'].", ".$_POST['prenom']."), ".$_POST['adresse'].", ".$_POST['commune'].");";
+            if($res = $connection->query($requete)){
+				$connection->close();
+				header("Location: https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_utilisateur.php?id=".$_POST['id_utilisateur']);
+				exit();
+			}
+			$connection->close();
+        } 
+	 ?>
+
 
 </body>
 </html>
