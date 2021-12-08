@@ -65,15 +65,6 @@ SELECT id_velo, count(*) as nbr_utilisations FROM utilisations GROUP BY id_velo 
 SELECT week, (km / nbr_adh) as nbr_km_moyenne_par_adherentFROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT weekofyear(date_debut) as week, SUM(kilometrage_parcouru) as km FROM utilisations GROUP BY weekofyear(date_debut)) as b;
 
 
-/** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
-/*DELIMITER |
-CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_day VARCHAR(100))
-BEGIN
-SELECT dayname, (km / nbr_adh) as nbr_km_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DAYNAME(date_debut) as dayname, count(*) as km FROM utilisations WHERE DAYNAME(date_debut) = p_day GROUP BY DAYNAME(date_debut)) as b;
-END |
-DELIMITER ;
-*/
-
 /** RAPPORT RENOUVELLEMENT ABONNEMENT **/
 Nombre pers renouvele / nombre personne
 
@@ -90,4 +81,21 @@ SELECT id_station_debut, id_station_fin, count(*) as nbr_de_fois_effectue from u
 
 /** LISTE DES ADHERENTS AYANT EMPRUNTE AU MOINS 2 VELOS DIFFERENTS SUR UNE MEME JOURNEE **/
 SELECT id_adherent FROM (SELECT id_adherent, count(*) as nbr FROM (SELECT id_adherent FROM utilisations WHERE DATE(date_debut) = DATE(NOW()) GROUP BY id_adherent, id_velo) as d GROUP BY id_adherent) as c WHERE nbr > 1;
+
+/** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
+DELIMITER |
+CREATE PROCEDURE avg_nbr_utilisations_jour(IN p_day VARCHAR(100))
+BEGIN
+SELECT dayname, (nbr_use / nbr_adh) as nbr_use_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DAYNAME(date_debut) as dayname, count(*) as nbr_use FROM utilisations WHERE DAYNAME(date_debut) = p_day GROUP BY DAYNAME(date_debut)) as b;
+END |
+DELIMITER ;
+
+DELIMITER |
+CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_id_velo)
+BEGIN
+SELECT nbr_use / DATEDIFF(last_date, first_date) FROM (SELECT id_velo, count(*) as nbr_use from utilisations WHERE id_velo = 2 GROUP BY id_velo) as a, (SELECT MIN(date_debut) as first_date, MAX(date_debut) as last_date FROM utilisations) as b;
+
+
+END |
+DELIMITER ;
 

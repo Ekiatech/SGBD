@@ -159,9 +159,9 @@ CREATE VIEW dates_utilisations AS SELECT *, weekofyear(date_debut) as weeks, mon
 
 /** NOMBRE DE KM PARCOURUS PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
 DELIMITER |
-CREATE PROCEDURE nbr_km_parcourus_semaine (IN p_id_adherent INT, IN yo VARCHAR(100))
+CREATE PROCEDURE nbr_km_parcourus_semaine (IN p_id_adherent INT, IN p_type VARCHAR(100))
 BEGIN
-SELECT SUM(kilometrage_parcouru), id_adherent, weeks from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY weeks, id_adherent;
+SELECT SUM(kilometrage_parcouru), id_adherent, p_type from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY p_type, id_adherent;
 END |
 DELIMITER ;
 
