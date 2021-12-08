@@ -54,7 +54,7 @@ VALUES
 (2, SUBDATE(now(), 120), SUBDATE(now(), 15)),
 (3, SUBDATE(now(), 100), ADDDATE(now(), 50)),
 (4, SUBDATE(now(), 80), ADDDATE(now(), 10)),
-(5, SUBDATE(now(), 65), ADDATE(now(), 60)),
+(5, SUBDATE(now(), 65), ADDDATE(now(), 60)),
 (6, SUBDATE(now(), 20), ADDDATE(now(), 214));
 
 UPDATE adherents SET date_fin_adhesion = SUBDATE(now(), 100) WHERE id_personne = 1;

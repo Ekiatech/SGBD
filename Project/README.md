@@ -40,7 +40,6 @@ Afin de supprimer la BDD il faut exécuter dans l'ordre les scripts :
 Ou sinon un script suppression_all.sql permet de réaliser cette même tâche
 
 
-
 ## UTILISATION
 
 Si l'utilisation se fait via le terminal, la liste des requêtes de consultations

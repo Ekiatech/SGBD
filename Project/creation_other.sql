@@ -506,9 +506,10 @@ END |
 DELIMITER ;
 
 
+
 /** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
 DELIMITER |
-CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_id_velo)
+CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_id_velo INT)
 BEGIN
 SELECT nbr_use / DATEDIFF(last_date, first_date) FROM (SELECT id_velo, count(*) as nbr_use from utilisations WHERE id_velo = 2 GROUP BY id_velo) as a, (SELECT MIN(date_debut) as first_date, MAX(date_debut) as last_date FROM utilisations) as b;
 END |
