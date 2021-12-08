@@ -91,7 +91,7 @@ DELIMITER ;
 
 
 DELIMITER |
-CREATE PROCEDURE ajout_fin_utilisation(IN p_id_velo INT, IN p_id_adherent INT, IN p_id_station_fin INT)
+CREATE PROCEDURE ajout_fin_utilisation(IN p_id_adherent INT, IN p_id_station_fin INT)
 BEGIN
 
         IF p_id_adherent NOT IN (SELECT id_adherent FROM utilisations WHERE id_adherent = p_id_adherent AND date_fin IS NULL)
@@ -100,11 +100,7 @@ BEGIN
 	        SET MESSAGE_TEXT = 'Vous navez pas emprunte de velo';
          END IF;
 
-         IF p_id_velo NOT IN (SELECT id_velo FROM utilisations WHERE p_id_velo = id_velo AND date_fin IS NULL AND id_adherent = p_id_adherent) 
-         THEN
-           SIGNAL SQLSTATE '45000'
-	        SET MESSAGE_TEXT = 'Veuillez reposer le velo emprunte et non un autre';
-         END IF;
+        SELECT id_velo INTO @id_velo FROM utilisations WHERE id_adherent = p_id_adherent AND date_fin IS NULL;
 
          
         SELECT id_utilisation INTO @id_utilisation FROM utilisations WHERE id_adherent = p_id_adherent AND date_fin IS NULL;
@@ -127,19 +123,19 @@ BEGIN
         UPDATE utilisations SET date_fin = now() WHERE id_utilisation = @id_utilisation;
 
         /** MISE A JOUR TABLE VELOS DE station VELO **/
-        UPDATE velos set id_station = p_id_station_fin WHERE velos.id_velo = p_id_velo;
+        UPDATE velos set id_station = p_id_station_fin WHERE velos.id_velo = @id_velo;
 
         /** MISE A JOUR TABLE VELOS kilometrage VELO **/
-        UPDATE velos SET kilometrage = kilometrage + @dist WHERE velos.id_velo = p_id_velo;
+        UPDATE velos SET kilometrage = kilometrage + @dist WHERE velos.id_velo = @id_velo;
 
         /** MISE A JOUR TABLE VELOS batterie VELO **/
-        SELECT batterie INTO @batterie FROM velos WHERE p_id_velo = id_velo;
+        SELECT batterie INTO @batterie FROM velos WHERE id_velo = @id_velo;
 
         IF (@batterie - 0.2 * @dist) > 0
          THEN
-            UPDATE velos SET batterie = (batterie - 0.2 * @dist) WHERE velos.id_velo = p_id_velo;
+            UPDATE velos SET batterie = (batterie - 0.2 * @dist) WHERE velos.id_velo = @id_velo;
         ELSE      
-           UPDATE velos SET batterie = 0 WHERE velos.id_velo = p_id_velo;
+           UPDATE velos SET batterie = 0 WHERE velos.id_velo = @id_velo;
          END IF;
 
 END |
@@ -159,9 +155,9 @@ CREATE VIEW dates_utilisations AS SELECT *, weekofyear(date_debut) as weeks, mon
 
 /** NOMBRE DE KM PARCOURUS PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
 DELIMITER |
-CREATE PROCEDURE nbr_km_parcourus_semaine (IN p_id_adherent INT, IN p_type VARCHAR(100))
+CREATE PROCEDURE nbr_km_parcourus_semaine (IN p_id_adherent INT)
 BEGIN
-SELECT SUM(kilometrage_parcouru), id_adherent, p_type from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY p_type, id_adherent;
+SELECT SUM(kilometrage_parcouru), id_adherent, weeks from dates_utilisations WHERE id_adherent = p_id_adherent GROUP BY weeks, id_adherent;
 END |
 DELIMITER ;
 
@@ -230,6 +226,7 @@ BEGIN
         INSERT INTO adherents(id_personne, date_debut_adhesion, date_fin_adhesion)
         VALUES
         (@id_pers, now(), ADDDATE(now(), INTERVAL 6 MONTH));
+        SELECT MAX(id_adherent) as new_id_adherent FROM adherents;
 END |
 DELIMITER ;
 
@@ -263,6 +260,12 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE dist_between_2_stations(IN p_id_station INT, IN p_id_stationbis INT)
 BEGIN
+        IF p_id_station NOT IN (SELECT id_station FROM stations) OR p_id_stationbis NOT IN (SELECT id_station FROM stations)
+        THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'id_station invalide';
+               END IF;
+        
         SET @dist = 0;
         IF p_id_station < p_id_stationbis
         THEN
@@ -288,7 +291,7 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE rank_end_station(IN p_id_adherent INT)
 BEGIN
-SELECT id_station_debut, count(*) as nbr_utilisations FROM utilisations WHERE id_adherent = p_id_adherent GROUP BY id_station_debut ORDER BY nbr_utilisations;
+SELECT id_station_fin, count(*) as nbr_utilisations FROM utilisations WHERE id_adherent = p_id_adherent GROUP BY id_station_fin ORDER BY nbr_utilisations;
 END |
 DELIMITER ;
 
@@ -305,7 +308,14 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE duration_adhesion(IN p_id_adherent INT)
 BEGIN
-SELECT TIMESTAMPDIFF(DAY, date_debut_adhesion, date_fin_adhesion) FROM adherents WHERE id_adherent = p_id_adherent;
+        SELECT TIMESTAMPDIFF(DAY, NOW(), date_fin_adhesion) as duree_restante INTO @duration_adhesion_restante FROM adherents WHERE id_adherent = p_id_adherent;
+        IF @duration_adhesion_restante < 0
+        THEN
+                SELECT 0 as duree_restante;
+        ELSE
+                SELECT @duration_adhesion_restante as duree_restante;
+        END IF;
+        
 END |
 DELIMITER ;
 
@@ -373,7 +383,7 @@ DELIMITER ;
 
 /** SUPPRESSION ADHERENT **/
 DELIMITER |
-CREATE PROCEDURE suppression_adherent(IN p_id_adherent INT)
+CREATE PROCEDURE fin_adhesion(IN p_id_adherent INT)
 BEGIN
 IF p_id_adherent NOT IN (SELECT id_adherent FROM adherents) 
 THEN
@@ -441,9 +451,13 @@ END IF;
     INSERT INTO adherents (id_personne, date_debut_adhesion, date_fin_adhesion)
     VALUES
     (@id_personne, NOW(), ADDDATE(NOW(), INTERVAL 6 MONTH));
+
+    SELECT MAX(id_adherent) as new_id_adherent FROM adherents;
 END |
 DELIMITER ;
 
+/** CREATION VIEW NOMBRES DE PERSONNES AYANT RENOUVELÉ AU MOINS 1 FOIS **/
+CREATE VIEW nbr_pers_renew as SELECT count(nbr_renew) as nbr_pers_renew FROM (SELECT nbr_renew FROM (SELECT count(*) as nbr_renew FROM adherents GROUP BY id_personne) as al WHERE nbr_renew > 1) as a;
 
 /** TAUX DE REABONNEMENT **/
 DELIMITER |
@@ -454,7 +468,7 @@ BEGIN
        SELECT @nbr_pers_renew / @nbr_pers;
 
 END |
-DELIMITER;
+DELIMITER ;
 
 /** RECHARGER BATTERIE **/
 DELIMITER |
@@ -491,3 +505,48 @@ END IF;
 END |
 DELIMITER ;
 
+
+/** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
+DELIMITER |
+CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_id_velo)
+BEGIN
+SELECT nbr_use / DATEDIFF(last_date, first_date) FROM (SELECT id_velo, count(*) as nbr_use from utilisations WHERE id_velo = 2 GROUP BY id_velo) as a, (SELECT MIN(date_debut) as first_date, MAX(date_debut) as last_date FROM utilisations) as b;
+END |
+DELIMITER ;
+
+/** MOYENNE D'UTILISATION VELOS PAR ADHERENT POUR UN JOUR DONNE **/
+DELIMITER |
+CREATE PROCEDURE avg_nbr_utilisations_jour(IN p_day VARCHAR(100))
+BEGIN
+SELECT dayname, (nbr_use / nbr_adh) as nbr_use_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DAYNAME(date_debut) as dayname, count(*) as nbr_use FROM utilisations WHERE DAYNAME(date_debut) = p_day GROUP BY DAYNAME(date_debut)) as b;
+END |
+DELIMITER ;
+
+
+/** SUPPRESSION UTILISATION **/
+DELIMITER |
+CREATE PROCEDURE delete_utilisation(IN p_id_utilisation INT)
+BEGIN
+      IF p_id_utilisation NOT IN (SELECT id_utilisation FROM utilisations) 
+      THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'id_utilisation invalide';
+      END IF;
+
+      DELETE FROM utilisations WHERE id_utilisation = p_id_utilisation;
+END |
+DELIMITER ;
+
+/** SUPPRESSION ADHERENT **/
+DELIMITER |
+CREATE PROCEDURE delete_adherent(IN p_id_adherent INT)
+BEGIN
+      IF p_id_adherent NOT IN (SELECT id_adherent FROM adherents) 
+      THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'id_adherent invalide';
+      END IF;
+
+      DELETE FROM adherents WHERE id_adherent = p_id_adherent;
+END |
+DELIMITER ;

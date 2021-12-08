@@ -4,18 +4,14 @@
 SELECT * FROM adherents WHERE date_fin_adhesion < NOW();
 
 /** INFORMATION SUR 1 ADHERENT **/
-CALL info_adherent(p_id_adherent INT)
+CALL info_adherent(p_id_adherent INT);
 
 
 /** VELOS EN COURS D'UTILISATION **/
 SELECT * FROM velos WHERE id_station IS NULL;
 
 /** INFOS VELOS **/
-CALL infos_velos(IN p_id_velo INT)
-BEGIN
-SELECT * FROM velos WHERE id_velo = p_id_velo;
-END |
-DELIMITER ;
+CALL infos_velos(p_id_velo INT);
 
 /** VELOS EN MAUVAIS ETAT **/
 SELECT * FROM velos WHERE etat IN ('Mauvais', 'Inutilisable');
@@ -23,12 +19,10 @@ SELECT * FROM velos WHERE etat IN ('Mauvais', 'Inutilisable');
 /** =============== UTILISATIONS =============== **/
 
 /** AJOUT VELO **/
-CALL ajout_velo(p_reference VARCHAR(100), p_marque VARCHAR(100), p_kilometrage FLOAT, p_etat VARCHAR(100), p_batterie INT, p_id_station INT)
-
-
+CALL ajout_velo(p_reference VARCHAR(100), p_marque VARCHAR(100), p_kilometrage FLOAT, p_etat VARCHAR(100), p_batterie INT, p_id_station INT);
 
 /** SUPPRESSION VELO **/
-CALL suppression_velo(p_id_velo INT)
+CALL suppression_velo(p_id_velo INT);
 
 
 /** AJOUT STATION **/
@@ -43,10 +37,10 @@ DELIMITER ;
 */
 
 /** SUPPRESSION ADHERENT **/
-CALL suppression_adherent(p_id_adherent INT)
+CALL suppression_adherent(p_id_adherent INT);
 
 /** DEPLACER VELO **/
-CALL deplacement_velo(p_id_velo INT, p_id_station INT)
+CALL deplacement_velo(p_id_velo INT, p_id_station INT);
 
 /** =============== STATS GENERALES =============== **/
 
@@ -66,13 +60,7 @@ SELECT week, (km / nbr_adh) as nbr_km_moyenne_par_adherentFROM (SELECT count(*) 
 
 
 /** RAPPORT RENOUVELLEMENT ABONNEMENT **/
-Nombre pers renouvele / nombre personne
-
-CREATE VIEW nbr_pers_renew as SELECT count(nbr_renew) as nbr_pers_renew FROM (SELECT nbr_renew FROM (SELECT count(*) as nbr_renew FROM adherents GROUP BY id_personne) as al WHERE nbr_renew > 1) as a;
-
-SELECT nbr_pers_renew FROM nbr_pers_renew;
-
-SELECT count(id_personne) as nbr_pers FROM personnes;
+CALL taux_reabonnement();
 
 x
 /** CLASSEMENT TRAJET PLUS EFFECTUE **/
@@ -83,19 +71,7 @@ SELECT id_station_debut, id_station_fin, count(*) as nbr_de_fois_effectue from u
 SELECT id_adherent FROM (SELECT id_adherent, count(*) as nbr FROM (SELECT id_adherent FROM utilisations WHERE DATE(date_debut) = DATE(NOW()) GROUP BY id_adherent, id_velo) as d GROUP BY id_adherent) as c WHERE nbr > 1;
 
 /** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
-DELIMITER |
-CREATE PROCEDURE avg_nbr_utilisations_jour(IN p_day VARCHAR(100))
-BEGIN
-SELECT dayname, (nbr_use / nbr_adh) as nbr_use_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DAYNAME(date_debut) as dayname, count(*) as nbr_use FROM utilisations WHERE DAYNAME(date_debut) = p_day GROUP BY DAYNAME(date_debut)) as b;
-END |
-DELIMITER ;
+CALL avg_nbr_usager_velo_jour(p_id_velo);
 
-DELIMITER |
-CREATE PROCEDURE avg_nbr_usager_velo_jour(IN p_id_velo)
-BEGIN
-SELECT nbr_use / DATEDIFF(last_date, first_date) FROM (SELECT id_velo, count(*) as nbr_use from utilisations WHERE id_velo = 2 GROUP BY id_velo) as a, (SELECT MIN(date_debut) as first_date, MAX(date_debut) as last_date FROM utilisations) as b;
-
-
-END |
-DELIMITER ;
-
+/** MOYENNE D'UTILISATION VELOS PAR ADHERENT POUR UN JOUR DONNE **/
+CALL avg_nbr_utilisations_jour(p_day VARCHAR(100));
