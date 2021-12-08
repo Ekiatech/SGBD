@@ -10,7 +10,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="return" value="1">
-				<input type="submit" value="Retour"  />
+				<input type="submit" class = 'button' value="Retour"  />
             </p>
         </form>
         
@@ -20,6 +20,39 @@
 			exit();
 		}
         ?>
+        <h
         
+        
+        <div>
+            <h1>D&eacute;poser un v&eacute;lo</h1>
+        </div>
+        
+        
+        
+        <form method = "post">
+            <p>	
+				<label>Station de retour :</label> 
+				<input type="text" name="station">
+				<input type="submit" class = 'button' value="D&eacute;poser"  />
+            </p>
+        </form>
+        
+        <?php
+        
+        if (!empty($_POST['station'])){
+			include "connect.php";
+			$requete = "CALL ajout_fin_utilisation(".$_GET['id'].",".$_POST['station'].");";
+			if($res = $connection->query($requete)){
+				echo "<h3>v&eacute;lo d&eacute;pos&eacute; avec succ&egrave;s</h3>";
+				$connection->close();
+		
+			}
+				
+			else{
+				echo "<h3>$connection->error</h3>";
+				$connection->close();
+			}
+		}
+        ?>
    </body>
 </html> 
