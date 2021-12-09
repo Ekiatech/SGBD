@@ -20,7 +20,7 @@ Pour le projet, le SGBD choisi est MySQL.
  
 Afin de créer la base de données, veuillez exécutez dans l'ordre les scripts :
 ```mysql
-> source creation.sql
+> source creation_base.sql
 > source creation_other.sql
 ```
 
@@ -36,7 +36,7 @@ cela se fait à l'aide de la commande :
 La commande permettant de créer l'ensemble de la base ainsi que de la remplir
 peut se faire à l'aide de la commande :
 ```mysql
-> source creation_all.sql
+> source creation.sql
 ```
 
 Une base de données au nom de PROJECT_SQL s'est ainsi créée.
@@ -47,11 +47,11 @@ C'est cette dernière qu'il faut utiliser à l'aide de la commande :
 
 Afin de supprimer la BDD il faut exécuter dans l'ordre les scripts :
 ```mysql
-> source suppression.sql
 > source suppression_other.sql
+> source suppression_base.sql
 ```
 
-Ou sinon un script suppression_all.sql permet de réaliser cette même tâche
+Ou sinon un script suppression.sql permet de réaliser cette même tâche
 
 
 ## UTILISATION
