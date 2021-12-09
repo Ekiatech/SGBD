@@ -12,7 +12,7 @@ Ce projet s'est déroulé durant 3 semaines par équipe de 3.
 ## SUR INTERNET
 
 Pour accèder à la BDD avec une interface dynamique, veuillez vous rendre
-sur :
+sur : https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/projet_sgbd.php
 
 ## INSTALLATION
 
@@ -63,3 +63,6 @@ sont visibles dans un fichier mise_a_jour.sql
 Il est important de savoir qu'il ne faut pas lancer ces 2 fichiers .sql car ces derniers
 contiennent des CALL sans valeur renseignées, ceux qui provoqueraient logiquement des
 erreurs.
+
+Cependant, un fichier consultations_executables.sql est executables car
+des valeurs quelconques ont été renseignées dans les CALL.

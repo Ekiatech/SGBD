@@ -56,14 +56,14 @@ VALUES
 (3, SUBDATE(now(), 100), ADDDATE(now(), 50)),
 (4, SUBDATE(now(), 80), ADDDATE(now(), 8)),
 (5, SUBDATE(now(), 65), ADDDATE(now(), 60)),
-(6, SUBDATE(now(), 20), ADDDATE(now(), 214));
+(6, SUBDATE(now(), 30), ADDDATE(now(), 214));
 
 UPDATE adherents SET date_fin_adhesion = SUBDATE(now(), 100) WHERE id_personne = 1;
 
 INSERT INTO adherents (id_personne, date_debut_adhesion, date_fin_adhesion)
 VALUES
 
-(1, SUBDATE(now(),30), ADDDATE(now(), 8));
+(1, SUBDATE(now(), 20), ADDDATE(now(), 8));
 
 
 INSERT INTO etre_eloigne (id_station, id_stationbis, distance)

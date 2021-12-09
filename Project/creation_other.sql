@@ -363,7 +363,7 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE rank_velos_station(IN p_id_station INT)
 BEGIN
-       IF p_id_station NOT IN (SELECT id_station FROM stationss) 
+       IF p_id_station NOT IN (SELECT id_station FROM stations) 
 THEN
         SIGNAL SQLSTATE '45000'
                SET MESSAGE_TEXT = 'id_station invalide';
@@ -475,6 +475,19 @@ THEN
         SIGNAL SQLSTATE '45000'
                SET MESSAGE_TEXT = 'Pas de places disponibles cette station. Veuillez en renseigner une autre';
 END IF;
+
+IF p_batterie < 0 OR p_batterie > 100
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'La batterie doit etre compris entre 0 et 100';
+END IF;
+
+IF p_etat NOT IN ('Excellent', 'Bon', 'Moyen', 'Mauvais', 'Inutilisable')
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Veuillez choisir un etat parmi : Excellent, Bon, Moyen, Mauvais, Inutilisable';
+END IF;
+
 INSERT INTO velos (reference, marque, date_mise_en_service, kilometrage, etat, batterie, id_station)
 VALUES
 (p_reference, p_marque, NOW(), p_kilometrage, p_etat, p_batterie, p_id_station);
@@ -491,7 +504,12 @@ THEN
         SIGNAL SQLSTATE '45000'
                SET MESSAGE_TEXT = 'id_velo invalide';
 END IF;
-SET FOREIGN_KEY_CHECKS=1;
+IF p_id_velo IN (SELECT id_velo FROM velos WHERE id_station IS NULL) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Impossible de supprimer un velo en cours dutilisation.';
+END IF;
+SET FOREIGN_KEY_CHECKS=0;
 DELETE FROM velos WHERE id_velo = p_id_velo;
 SET FOREIGN_KEY_CHECKS=1;
 END |

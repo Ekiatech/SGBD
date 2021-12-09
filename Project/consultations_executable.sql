@@ -7,11 +7,10 @@
 /** =============== CONNEXION =============== **/
 
 /** ADHERENT EXISTANT **/
-CALL exist_adherent(p_id_adherent INT);
+CALL exist_adherent(3);
 
 /** AJOUT PERSONNE **/
-CALL ajout_personne(p_nom VARCHAR(100), p_prenom VARCHAR(100), p_adresse VARCHAR(100), p_commune VARCHAR(100));
-
+CALL ajout_personne('Valentin', 'Darmon', 'Rue Puysegur', 'Talence');
 
 /** =============== CONSULTATIONS =============== **/
 
@@ -21,7 +20,7 @@ SELECT * FROM stations;
 /** INFOS VELOS STATION **/
 SELECT * FROM stations INNER JOIN velos USING(id_station) ORDER BY id_station;
 
-CALL info_velo_station(p_id_velo INT);
+CALL info_velo_station(2);
 
 /** CLASSEMENT MEILLEUR VELO (BATTERIE) NON UTILISEE **/
 SELECT * FROM velos WHERE id_station IS NOT NULL ORDER BY batterie;
@@ -30,34 +29,34 @@ SELECT * FROM velos WHERE id_station IS NOT NULL ORDER BY batterie;
 SELECT DISTINCT commune FROM stations ORDER BY commune;
 
 /** INFOS STATIONS COMMUNE X **/
-CALL info_station_commune(p_commune VARCHAR(100));
+CALL info_station_commune('Talence');
 
 /** CLASSEMENT STATIONS D'UNE COMMUNE EN FONCTION NOMBRE DE VELOS **/
-CALL info_station_commune(p_commune VARCHAR(100));
+CALL info_station_commune('Talence');
 
 /** DISTANCE ENTRE DEUX STATIONS **/
-CALL dist_between_2_stations(p_id_station INT, p_id_stationbis INT);
+CALL dist_between_2_stations(1,3);
 
 
 /** =============== STATISTIQUES =============== **/
 
 /** CLASSEMENT STATION_DEBUT PLUS UTILISEE **/
-CALL rank_start_station(p_id_adherent INT);
+CALL rank_start_station(5);
 
 /** CLASSEMENT STATION_FIN PLUS UTILISEE **/
-CALL rank_end_station(p_id_adherent INT);
+CALL rank_end_station(6);
 
 /** DATE DE FIN D'ABONNEMENT **/
-CALL date_end_adhesion(p_id_adherent INT);
+CALL date_end_adhesion(4);
 
 /** DUREE ABONNEMENT **/
-CALL duration_adhesion(p_id_adherent INT);
+CALL duration_adhesion(5);
 
 /** SE REABONNER **/
-CALL se_reabonner(p_id_adherent INT);
+CALL se_reabonner(1);
 
 /** CLASSEMENT VELOS (BATTERIE) SUR UNE STATION **/
-CALL rank_velos_station(p_id_station INT);
+CALL rank_velos_station(4);
 
 
 /** ============================================== 
@@ -72,13 +71,13 @@ CALL rank_velos_station(p_id_station INT);
 SELECT count(id_adherent) as nbr_adherents FROM adherents WHERE date_fin_adhesion > NOW();
 
 /** INFORMATION SUR 1 ADHERENT **/
-CALL info_adherent(p_id_adherent INT);
+CALL info_adherent(3);
 
 /** VELOS EN COURS D'UTILISATION **/
 SELECT * FROM velos WHERE id_station IS NULL;
 
 /** INFOS VELOS **/
-CALL infos_velos(p_id_velo INT);
+CALL infos_velos(2);
 
 /** VELOS EN MAUVAIS ETAT **/
 SELECT * FROM velos WHERE etat IN ('Mauvais', 'Inutilisable');
@@ -110,7 +109,7 @@ CALL taux_reabonnement();
 SELECT id_station_debut, id_station_fin, count(*) as nbr_de_fois_effectue FROM utilisations WHERE id_station_fin IS NOT NULL GROUP BY id_station_debut, id_station_fin ORDER BY nbr_de_fois_effectue DESC;
 
 /** MOYENNE NOMBRE D'USAGER PAR VELO PAR JOUR  **/
-CALL avg_nbr_usager_velo_jour(p_id_velo);
+CALL avg_nbr_usager_velo_jour(2);
 
 /** MOYENNE D'UTILISATION VELOS PAR ADHERENT POUR UN JOUR DONNE **/
-CALL avg_nbr_utilisations_jour(p_day VARCHAR(100));
+CALL avg_nbr_utilisations_jour('2021-12-07');
