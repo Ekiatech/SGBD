@@ -1,2 +1,2 @@
 source suppression_other.sql
-source suppression.sql
+source suppression_base.sql

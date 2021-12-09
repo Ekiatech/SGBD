@@ -192,11 +192,16 @@ DELIMITER ;
 DELIMITER |
 CREATE PROCEDURE ajout_personne(IN p_nom VARCHAR(100), IN p_prenom VARCHAR(100), IN p_adresse VARCHAR(100), IN p_commune VARCHAR(100))
 BEGIN
+        IF p_nom IN (SELECT nom FROM personnes WHERE prenom = p_prenom AND adresse = p_adresse AND commune = p_commune)
+        THEN
+         SIGNAL SQLSTATE '45000'
+                     SET MESSAGE_TEXT = 'Vous existez deja. Veuillez vous identifier.';
+        END IF;
         INSERT INTO personnes (nom, prenom, adresse, commune)
         VALUES
         (p_nom, p_prenom, p_adresse, p_commune);
         SET @id_pers = 0;
-        SELECT id_personne INTO @id_pers FROM personnes WHERE nom = p_nom AND prenom = p_prenom AND adresse = p_adresse;
+        SELECT id_personne INTO @id_pers FROM personnes WHERE nom = p_nom AND prenom = p_prenom AND adresse = p_adresse AND commune = p_commune;
         INSERT INTO adherents(id_personne, date_debut_adhesion, date_fin_adhesion)
         VALUES
         (@id_pers, now(), ADDDATE(now(), INTERVAL 6 MONTH));
