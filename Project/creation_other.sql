@@ -538,6 +538,12 @@ THEN
                SET MESSAGE_TEXT = 'Pas de places disponibles cette station. Veuillez en renseigner une autre';
 END IF;
 
+IF p_id_velo IN (SELECT id_velo FROM velos WHERE id_station IS NULL) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Impossible de deplacer un velo en cours dutilisation.';
+END IF;
+
 UPDATE velos SET id_station = p_id_station WHERE id_velo = p_id_velo;
 END |
 DELIMITER ;
@@ -550,6 +556,12 @@ BEGIN
 THEN
         SIGNAL SQLSTATE '45000'
                SET MESSAGE_TEXT = 'id_velo invalide';
+END IF;
+
+IF p_id_velo IN (SELECT id_velo FROM velos WHERE id_station IS NULL) 
+THEN
+        SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = 'Impossible de recharger un velo en cours dutilisation.';
 END IF;
 
     SET @batterie = 0;
