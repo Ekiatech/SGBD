@@ -35,12 +35,12 @@ VALUES
 INSERT INTO velos (reference, marque, date_mise_en_service, id_station)
 VALUES
 
-('AD-95', 'BIKECI', SUBDATE(now(), 2), 1),
-('BG-230', 'Artengo', now(), 1),
-('BG-240', 'Artengo', now(), 3),
-('BG-240', 'Artengo', now(), 5),
-('BG-250', 'Artengo', now(), 1),
-('AZ-404', 'AddBike', ADDDATE(now(), 4), 2);
+('AD-95', 'BIKECI', SUBDATE(now(), 100), 1),
+('BG-230', 'Artengo', SUBDATE(now(), 100), 1),
+('BG-240', 'Artengo', SUBDATE(now(), 82), 3),
+('BG-240', 'Artengo', SUBDATE(now(), 80), 5),
+('BG-250', 'Artengo', SUBDATE(now(), 45), 1),
+('AZ-404', 'AddBike', SUBDATE(now(), 32), 2);
 
 UPDATE velos SET batterie = 75 WHERE id_velo = 3; 
 UPDATE velos SET batterie = 40 WHERE id_velo = 4;
