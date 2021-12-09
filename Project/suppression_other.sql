@@ -48,6 +48,6 @@ DROP PROCEDURE IF EXISTS suppression_adherent;
 DROP PROCEDURE IF EXISTS recharge_batterie;
 DROP PROCEDURE IF EXISTS rank_station_commune;
 
-
-
-
+/** SUPPRESSION PROCEDURES PEUPLEMENT **/
+DROP PROCEDURE IF EXISTS ajout_debut_utilisation_peuplement;
+DROP PROCEDURE IF EXISTS ajout_fin_utilisation_peuplement;
