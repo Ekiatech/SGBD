@@ -424,7 +424,7 @@ CREATE PROCEDURE taux_reabonnement()
 BEGIN
        SELECT nbr_pers_renew INTO @nbr_pers_renew FROM nbr_pers_renew;
        SELECT count(id_adherent) as nbr_pers INTO @nbr_pers FROM adherents WHERE date_fin_adhesion < NOW();
-       SELECT @nbr_pers_renew / @nbr_pers;
+       SELECT @nbr_pers_renew / @nbr_pers as taux;
 
 END |
 DELIMITER ;
