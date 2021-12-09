@@ -43,11 +43,14 @@
         {	
 			include "connect.php";
 			$requete = "CALL exist_adherent(".$_POST['id_utilisateur'].");";
-			if($connection->query($requete)){
+			if($res = $connection->query($requete)){
 				
 				header("Location: https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_utilisateur.php?id=".$_POST['id_utilisateur']);
 				$connection->close();
 				exit();
+			}
+			else{
+				echo "<h3>$connection->error</h3>";
 			}
 			$connection->close();
 				
@@ -82,6 +85,26 @@
         </p>
         
      </form>
+     
+      <?php
+	 if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['adresse']) && !empty($_POST['commune'])) 
+        {	
+			include "connect.php";
+			$requete = "CALL ajout_personne('".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['adresse']."', '".$_POST['commune']."');";
+			if($res = $connection->query($requete)){
+				$id = $res->fetch_assoc();
+				header("Location: https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_utilisateur.php?id=".$id['new_id_adherent']);
+				$connection->close();
+				exit();
+			}
+					
+			else{
+				echo "<h3>$connection->error</h3>";
+				$connection->close();
+			}
+
+        } 
+	?>
 	 
 
 

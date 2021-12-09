@@ -10,7 +10,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="return" value="1">
-				<input type="submit" value="Retour"  />
+				<input type="submit" class = 'button' value="Retour"  />
             </p>
         </form>
         
@@ -30,15 +30,15 @@
         <form method = "post">
             <p>
 				<label>Id de la premi&egrave;re station :</label>
-                <input type="text" name="commune" />
+                <input type="text" name="station1" />
             </p>
             <p>
 				<label>Id de la deuxi&egrave;me station:</label>
-                <input type="text" name="commune" />
+                <input type="text" name="station2" />
             </p>
             <p>
-                <input type="submit" value="Valider" />
-                <input type="submit" value="?" name="help" />
+                <input type="submit" class = 'button' value="Valider" />
+                <input type="submit" class = 'button' value="?" name="help" />
             </p>
         </form>
 
@@ -63,31 +63,22 @@
 		
              //fermeture de la connexion avec la base
              $connection->close();
-             echo "<h4> Attention - Id 1 doit &ecirc;tre inferieur &agrave; Id 2</h4>";
 		}
          
         
-        if (!empty($_POST['commune'])) 
+        if (!empty($_POST['station1']) && !empty($_POST['station2'])) 
         {
-			echo "Station pr&eacute;sentes &agrave; ".$_POST['commune'];
-		?>
-		<table>
-			<tr>
-		        <th>id_station</th>
-		        <th>adresse</th>
-			</tr>
-
-		<?php
 			include "connect.php"; 	
-            $requete = "SELECT * FROM stations WHERE commune = '".$_POST['commune']."';";
+            $requete = "CALL dist_between_2_stations(".$_POST['station1'].", ".$_POST['station2'].");";
             // Si l'execution est reussie... 
-            if($res = $connection->query($requete))
+            if($res = $connection->query($requete)){
             // ... on récupère un tableau stockant le résultat 
-				while ($station =  $res->fetch_assoc()) {
-					echo "\t".'<tr><td>'.$station['id_station'].'</td>';
-					echo '<td>'.$station['adresse'].'</td>';
-					echo '</tr>'."\n";
-                }
+				$station =  $res->fetch_assoc();
+				echo "<h3>La distance entre ces deux stations est : ".$station['distance']."km </h3>";
+			}
+            else{
+				echo "<h3>$connection->error</h3>";
+			}
 		
              //fermeture de la connexion avec la base
              $connection->close();

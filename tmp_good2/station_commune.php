@@ -10,7 +10,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="return" value="1">
-				<input type="submit" value="Retour"  />
+				<input type="submit" class = 'button' value="Retour"  />
             </p>
         </form>
         
@@ -31,8 +31,8 @@
             <p>
 				<label>Nom de la commune :</label>
                 <input type="text" name="commune" />
-                <input type="submit" value="Valider" />
-                <input type="submit" value="?" name="help" />
+                <input type="submit" class = 'button' value="Valider" />
+                <input type="submit" class = 'button' value="?" name="help" />
             </p>
         </form>
 
@@ -61,7 +61,9 @@
         {
 			echo "Station pr&eacute;sentes &agrave; ".$_POST['commune'];
 		?>
-		<table>
+		<table>echo "\t".'<tr><td>'.$station['id_station'].'</td>';
+					echo '<td>'.$station['adresse'].'</td>';
+					echo '</tr>'."\n";
 			<tr>
 		        <th>id_station</th>
 		        <th>adresse</th>
@@ -74,9 +76,7 @@
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
 				while ($station =  $res->fetch_assoc()) {
-					echo "\t".'<tr><td>'.$station['id_station'].'</td>';
-					echo '<td>'.$station['adresse'].'</td>';
-					echo '</tr>'."\n";
+					
                 }
 		
              //fermeture de la connexion avec la base
