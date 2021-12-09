@@ -1,6 +1,6 @@
 <html>
    <head>
-      <title>Page exemple</title>
+      <title>Projet SGBD</title>
 		<link href="style/bouttons.css" rel="stylesheet" type="text/css">
    </head>
    <body>
@@ -32,26 +32,26 @@
 		
 		<form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Information sur un adh&eacute;rent -- num&eacute;ro d'adh&eacute;rent : </label>
 				<input type="text" name="id_adherent" />
-				<input type="submit" value="?" name="help_id"/>
+				<input type="submit" class = 'button' value="?" name="help_id"/>
             </p>
         </form>
         
         <form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Liste des adh&eacute;rent qui utilisent au moins deux v&eacute;los pour un jour donn&eacute;es -- date : </label>
 				<input type="text" name="date" />
-				<input type="submit" value="?" name="help_date"/>
+				<input type="submit" class = 'button' value="?" name="help_date"/>
             </p>
         </form>
 		
 		 <form method = "post">
             <p>
 				<input type="hidden" name="nbr_velos" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Nombre de v&eacute;los </label>
             </p>
         </form>
@@ -59,24 +59,24 @@
         <form method = "post">
             <p>
 				<input type="hidden" name="velo_utilisation" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Nombre de v&eacute;los en cours d'utilisation</label>
             </p>
         </form>
         
         <form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Information sur un v&eacute;lo -- id_v&eacute;lo :</label>
 				<input type="text" name="id_velo" />
-				<input type="submit" value="?" name="help_velo"/>
+				<input type="submit" class = 'button' value="?" name="help_velo"/>
             </p>
         </form>
         
         <form method = "post">
             <p>
 				<input type="hidden" name="velo_etat" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Liste des v&eacute;los en mauvais &eacute;tat </label>
             </p>
         </form>
@@ -139,117 +139,169 @@
         
 		
 		if (!empty($_POST['nbr_adherents'])) {
-
-			echo "<h3>Distance parcouru par semaine :</h3>";
-			/*
-			?>
-			<table>
-				<tr>
-					<th>ID</th>
-					<th>Marque</th>
-					<th>Etat</th>
-				</tr>
-
-			<?php
 			include "connect.php"; 	
-            $requete = "SELECT * FROM stations;";
-            // Si l'execution est reussie... 
-            if($res = $connection->query($requete))
-            // ... on récupère un tableau stockant le résultat 
-				while ($station =  $res->fetch_assoc()) {
-					echo $station['id_station']."<br>";
+			$requete = "SELECT count(*) as nbr FROM adherents WHERE date_fin_adhesion < NOW();";
+			// Si l'execution est reussie... 
+			if($res = $connection->query($requete))
+			// ... on récupère un tableau stockant le résultat 
+			while ($var =  $res->fetch_assoc()) {
+					echo '<h3>Il y a actuellement '.$var['nbr'].' adh&eacute;rent.s</h3>';
 				}
-		
-             //fermeture de la connexion avec la base
-             $connection->close();
-			<\table>
-		*/
+			 //fermeture de la connexion avec la base
+			 $connection->close();
 		}
 	
 		if (!empty($_POST['id_adherent'])) {
 
-			echo "<h3>Heures de v&eacute;los effectu&eacute;es par semaine :</h3>";
-			/*
+			echo "<h3>Informations sur un adh&eacute;rent :</h3>";
+			
 			?>
 			<table>
 				<tr>
-					<th>ID</th>
-					<th>Marque</th>
-					<th>Etat</th>
+					<th>Id adh&eacute;rent</th>
+					<th>Nom</th>
+					<th>Prenom</th>
+					<th>Adresse</th>
+					<th>Commune</th>
+					<th>Date d&eacute;but d'abonnement</th>
+					<th>Date fin d'abonnement</th>
 				</tr>
 
 			<?php
 			include "connect.php"; 	
-            $requete = "SELECT * FROM stations;";
+            $requete = "CALL info_adherent(".$_POST['id_adherent'].");";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
 				while ($station =  $res->fetch_assoc()) {
-					echo $station['id_station']."<br>";
+					echo "\t".'<tr><td>'.$station['id_adherent'].'</td>';
+					echo '<td>'.$station['nom'].'</td>';
+					echo '<td>'.$station['prenom'].'</td>';
+					echo '<td>'.$station['adresse'].'</td>';
+					echo '<td>'.$station['commune'].'</td>';
+					echo '<td>'.$station['date_debut_adhesion'].'</td>';
+					echo '<td>'.$station['date_fin_adhesion'].'</td>';
+					echo '</tr>'."\n";
 				}
 		
              //fermeture de la connexion avec la base
              $connection->close();
-			<\table>
-		*/
+			?>
+			 <\table>
+			<?php
 		}
 	
 	
-		if (!empty($_POST['stations'])) {
+		if (!empty($_POST['date'])) {
 
-			echo "<h3>Stations les plus utilis&eacute;es :</h3>";
-			/*
-			?>
-			<table>
-				<tr>
-					<th>ID</th>
-					<th>Marque</th>
-					<th>Etat</th>
-				</tr>
+			echo "<h3>Liste des adh&eacute;rent qui utilisent au moins deux v&eacute;los pour un jour donn&eacute;es :</h3>";
 
-			<?php
+			echo "<h4>Id adh&eacute;rent</h4>";
 			include "connect.php"; 	
-            $requete = "SELECT * FROM stations;";
+            $requete = "SELECT id_adherent FROM (SELECT id_adherent, count(*) as nbr FROM (SELECT id_adherent FROM utilisations WHERE DATE(date_debut) = ".$_POST['date']." GROUP BY id_adherent, id_velo) as d GROUP BY id_adherent) as c WHERE nbr > 1;";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
 				while ($station =  $res->fetch_assoc()) {
-					echo $station['id_station']."<br>";
+					echo $station['id_adherent']."<br>";
 				}
 		
              //fermeture de la connexion avec la base
              $connection->close();
-			<\table>
-		*/
+			 ?>
+			 <\table>
+			<?php
+
 		}
 		
 		
-		if (!empty($_POST['abonnement'])) {
+		if (!empty($_POST['nbr_velos'])) {
 
-			echo "<h3>Dur&eacute;e de l'abonnement :</h3>";
-			/*
+			echo "<h3>Nombre ed v&eacute;lo en cours d'utilisation :</h3>";
+			include "connect.php"; 	
+            $requete = "SELECT * FROM velos WHERE id_station IS NULL;";
+            // Si l'execution est reussie... 
+            if($res = $connection->query($requete))
+            // ... on récupère un tableau stockant le résultat 
+				while ($station =  $res->fetch_assoc()) {
+					echo $station['id_velo']."<br>";
+				}
+		
+             //fermeture de la connexion avec la base
+             $connection->close();		
+		}
+
+
+
+		if (!empty($_POST['id_velo'])) {
+
+			echo "<h3>Informations sur le véeacute;lo ".$_POST['id_velo']." :</h3>";
+			
 			?>
 			<table>
 				<tr>
 					<th>ID</th>
+					<th>R&eacute;f&eacute;rence</th>
 					<th>Marque</th>
+					<th>Etat</th>
+					<th>Date de mise en service</th>
+					<th>Kilometrage</th>
+					<th>Batterie</th>
+				</tr>
+
+			<?php
+			include "connect.php"; 	
+            $requete = "CALL infos_velos(".$_POST['id_velo'].");";
+            // Si l'execution est reussie... 
+            if($res = $connection->query($requete))
+            // ... on récupère un tableau stockant le résultat 
+				while ($var =  $res->fetch_assoc()) {
+					echo "\t".'<tr><td>'.$var['id_velo'].'</td>';
+					echo '<td>'.$var['reference'].'</td>';
+					echo '<td>'.$var['marque'].'</td>';
+					echo '<td>'.$var['etat'].'</td>';
+					echo '<td>'.$var['date_mise_en_service'].'</td>';
+					echo '<td>'.$var['kilometrage'].'</td>';
+					echo '<td>'.$var['batterie'].'</td>';
+					echo '</tr>'."\n";
+				}
+		
+             //fermeture de la connexion avec la base
+             $connection->close();
+			?>
+			 <\table>
+			<?php
+		}
+
+
+		if (!empty($_POST['nbr_velos'])) {
+
+			echo "<h3>Liste des v&eacute;los en mauvais &eacute;tat :</h3>";
+			
+			?>
+			<table>
+				<tr>
+					<th>ID</th>
 					<th>Etat</th>
 				</tr>
 
 			<?php
 			include "connect.php"; 	
-            $requete = "SELECT * FROM stations;";
+            $requete = "SELECT * FROM velos WHERE etat IN ('Mauvais', 'Inutilisable');";
             // Si l'execution est reussie... 
             if($res = $connection->query($requete))
             // ... on récupère un tableau stockant le résultat 
-				while ($station =  $res->fetch_assoc()) {
-					echo $station['id_station']."<br>";
+				while ($var =  $res->fetch_assoc()) {
+					echo "\t".'<tr><td>'.$var['id_velo'].'</td>';
+					echo '<td>'.$var['etat'].'</td>';
+					echo '</tr>'."\n";
 				}
-		
              //fermeture de la connexion avec la base
              $connection->close();
-			<\table>
-		*/
+			 ?>
+			 <\table>
+			<?php
+		
 		}
 		?>
          
