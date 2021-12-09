@@ -10,7 +10,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="return" value="1">
-				<input type="submit" value="Retour"  />
+				<input type="submit" class = 'button' value="Retour"  />
             </p>
         </form>
         
@@ -31,8 +31,8 @@
             <p>
 				<label>Nom de la commune :</label>
                 <input type="text" name="commune" />
-                <input type="submit" value="Valider" />
-                <input type="submit" value="?" name="help" />
+                <input type="submit" class = 'button' value="Valider" />
+                <input type="submit" class = 'button' value="?" name="help" />
             </p>
         </form>
 

@@ -10,7 +10,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="return" value="1">
-				<input type="submit" value="Retour"  />
+				<input type="submit" class = 'button' value="Retour"  />
             </p>
         </form>
         
@@ -35,8 +35,8 @@
             <p>
 				<label>Num&eacute;ro de la station :</label>
                 <input type="text" name="id_station" />
-                <input type="submit" value="Valider" />
-                <input type="submit" value="?" name="liste" />
+                <input type="submit" class = 'button' value="Valider" />
+                <input type="submit" class = 'button' value="?" name="liste" />
             </p>
         </form>
 		

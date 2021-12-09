@@ -7,7 +7,7 @@
 
         <!-- Bouton retour -->
         <div>
-            <input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_utilisateur.php';" value="Retour"/> 
+            <input type="button" class = 'button' onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_utilisateur.php';" value="Retour"/> 
         </div>  
         
         <!-- Type de la requete -->
@@ -20,7 +20,7 @@
             <p>
 				<label>objectif de la requete :</label>
                 <input type="text" name="nom_variable" />
-                <input type="submit" value="Valider" />
+                <input type="submit" class = 'button' value="Valider" />
             </p>
         </form>
 

@@ -32,26 +32,26 @@
 		
 		<form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Information sur un adh&eacute;rent -- num&eacute;ro d'adh&eacute;rent : </label>
 				<input type="text" name="id_adherent" />
-				<input type="submit" value="?" name="help_id"/>
+				<input type="submit" class = 'button' value="?" name="help_id"/>
             </p>
         </form>
         
         <form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Liste des adh&eacute;rent qui utilisent au moins deux v&eacute;los pour un jour donn&eacute;es -- date : </label>
 				<input type="text" name="date" />
-				<input type="submit" value="?" name="help_date"/>
+				<input type="submit" class = 'button' value="?" name="help_date"/>
             </p>
         </form>
 		
 		 <form method = "post">
             <p>
 				<input type="hidden" name="nbr_velos" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Nombre de v&eacute;los </label>
             </p>
         </form>
@@ -59,24 +59,24 @@
         <form method = "post">
             <p>
 				<input type="hidden" name="velo_utilisation" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Nombre de v&eacute;los en cours d'utilisation</label>
             </p>
         </form>
         
         <form method = "post">
             <p>
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Information sur un v&eacute;lo -- id_v&eacute;lo :</label>
 				<input type="text" name="id_velo" />
-				<input type="submit" value="?" name="help_velo"/>
+				<input type="submit" class = 'button' value="?" name="help_velo"/>
             </p>
         </form>
         
         <form method = "post">
             <p>
 				<input type="hidden" name="velo_etat" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Liste des v&eacute;los en mauvais &eacute;tat </label>
             </p>
         </form>

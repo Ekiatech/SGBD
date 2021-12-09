@@ -8,7 +8,7 @@
         <!-- Bouton retour -->
 		
 		<div>
-            <input type="button" onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_administrateur.php';" value="Retour"/> 
+            <input type="button" class = 'button' onclick="window.location.href = 'https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/menu_administrateur.php';" value="Retour"/> 
         </div>
         <br>
         
@@ -24,7 +24,7 @@
         <form method = "post">
             <p>
 				<input type="hidden" name="kilometres" value="1">
-				<input type="submit" value="" />
+				<input type="submit" class = 'button' value="" />
 				<label>Nombre de kilometres r&eacute;alis&eacute; par semaine </label>
             </p>
         </form>
@@ -33,7 +33,7 @@
 		<form method = "post">
             <p>
 				<input type="hidden" name="heures" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Nombre d'heures r&eacute;alis&eacute; par semaine </label>
             </p>
         </form>
@@ -41,7 +41,7 @@
         <form method = "post">
             <p>
 				<input type="hidden" name="stations" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Classement des stations les plus utilis&eacute;es </label>
             </p>
         </form>
@@ -49,7 +49,7 @@
 		 <form method = "post">
             <p>
 				<input type="hidden" name="abonnement" value="1">
-				<input type="submit" value=""  />
+				<input type="submit" class = 'button' value=""  />
 				<label>Temps depuis votre d&eacute;but d'abonnement </label>
             </p>
         </form>
