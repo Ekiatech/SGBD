@@ -99,7 +99,7 @@ CALL ajout_debut_utilisation_peuplement(3, 2, SUBDATE(now(), 30));
 CALL ajout_fin_utilisation_peuplement(2, 6, ADDDATE(SUBDATE(now(), 30), INTERVAL 108 MINUTE));
 
 CALL ajout_debut_utilisation_peuplement(2, 4, SUBDATE(now(), 10));
-CALL ajout_fin_utilisation_peuplement(4, 3, ADDDATE(SUBDATE(now(), 30), INTERVAL 108 MINUTE));
+CALL ajout_fin_utilisation_peuplement(4, 3, ADDDATE(SUBDATE(now(), 10), INTERVAL 108 MINUTE));
 
 CALL ajout_debut_utilisation_peuplement(3, 4, SUBDATE(now(), 8));
 CALL ajout_fin_utilisation_peuplement(4, 4, ADDDATE(SUBDATE(now(), 8), INTERVAL 24 MINUTE));
@@ -134,11 +134,11 @@ CALL ajout_fin_utilisation_peuplement(3, 1, ADDDATE(SUBDATE(now(), 2), INTERVAL 
 CALL ajout_debut_utilisation_peuplement(2, 6, SUBDATE(now(), 2));
 CALL ajout_fin_utilisation_peuplement(6, 4, ADDDATE(SUBDATE(now(), 2), INTERVAL 24 MINUTE));
 
-CALL ajout_debut_utilisation_peuplement(2, 5, SUBDATE(now(), 1));
-CALL ajout_fin_utilisation_peuplement(5, 1, ADDDATE(SUBDATE(now(), 1), INTERVAL 20 MINUTE));
-
 CALL ajout_debut_utilisation_peuplement(2, 6, SUBDATE(now(), 2));
 CALL ajout_fin_utilisation_peuplement(6, 2, ADDDATE(SUBDATE(now(), 2), INTERVAL 40 MINUTE));
+
+CALL ajout_debut_utilisation_peuplement(2, 5, SUBDATE(now(), 1));
+CALL ajout_fin_utilisation_peuplement(5, 1, ADDDATE(SUBDATE(now(), 1), INTERVAL 20 MINUTE));
 
 CALL ajout_debut_utilisation_peuplement(4, 6, SUBDATE(now(), INTERVAL 40 MINUTE));
 CALL ajout_fin_utilisation_peuplement(6, 5, ADDDATE(SUBDATE(now(), INTERVAL 40 MINUTE), INTERVAL 12 MINUTE));

@@ -6,6 +6,9 @@ DROP VIEW IF EXISTS nbr_velos_dispos_stations;
 DROP VIEW IF EXISTS nbr_places_dispos_stations;
 DROP VIEW IF EXISTS dates_utilisations;
 DROP VIEW IF EXISTS nbr_pers_renew;
+DROP VIEW IF EXISTS nbr_renew0;
+DROP VIEW IF EXISTS nbr_renew1;
+DROP VIEW IF EXISTS stations_bornes;
 
 DROP PROCEDURE IF EXISTS nbr_velos_dispos_station;
 DROP PROCEDURE IF EXISTS nbr_places_dispos_station;

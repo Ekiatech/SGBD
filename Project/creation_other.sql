@@ -80,6 +80,17 @@ CREATE VIEW dates_utilisations AS SELECT *, weekofyear(date_debut) as weeks, mon
 /** CREATION VIEW NOMBRES DE PERSONNES AYANT RENOUVELÉ AU MOINS 1 FOIS **/
 CREATE VIEW nbr_pers_renew as SELECT count(nbr_renew) as nbr_pers_renew FROM (SELECT nbr_renew FROM (SELECT count(*) as nbr_renew FROM adherents GROUP BY id_personne) as al WHERE nbr_renew > 1) as a;
 
+/** POUR QUE LES VUES nbr_places_dispos_stations ET nbr_pers_renew FONCTIONNENT SUR LE SITE **/
+/**CREATE VIEW stations_bornes AS SELECT id_station, nombre_bornes FROM stations;
+
+CREATE VIEW nbr_places_dispos_stations AS SELECT id_station, nombre_bornes - nbr_velos from stations_bornes INNER JOIN nbr_velos_dispos_stations USING(id_station);
+
+/CREATE VIEW nbr_renew0 AS SELECT count(*) as nbr_renew FROM adherents GROUP BY id_personne;
+
+CREATE VIEW nbr_renew1 as SELECT nbr_renew FROM nbr_renew0 WHERE nbr_renew > 1;
+
+CREATE VIEW nbr_pers_renew as SELECT count(nbr_renew) as nbr_pers_renew FROM nbr_renew1;**/
+
 /** ============================================== 
 
                     CREATION PROCEDURES
@@ -439,9 +450,9 @@ DELIMITER ;
 
 /** MOYENNE D'UTILISATION VELOS PAR ADHERENT POUR UN JOUR DONNE **/
 DELIMITER |
-CREATE PROCEDURE avg_nbr_utilisations_jour(IN p_day VARCHAR(100))
+CREATE PROCEDURE avg_nbr_utilisations_jour(IN p_day DATE)
 BEGIN
-SELECT dayname, (nbr_use / nbr_adh) as nbr_use_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DAYNAME(date_debut) as dayname, count(*) as nbr_use FROM utilisations WHERE DAYNAME(date_debut) = p_day GROUP BY DAYNAME(date_debut)) as b;
+SELECT daydate, (nbr_use / nbr_adh) as nbr_use_moyenne_par_adherent FROM (SELECT count(*) as nbr_adh FROM adherents WHERE date_fin_adhesion >= DATE(NOW())) as a, (SELECT DATE(date_debut) as daydate, count(*) as nbr_use from utilisations WHERE DATE(date_debut) = p_day GROUP BY DATE(date_debut)) as b;
 END |
 DELIMITER ;
 
