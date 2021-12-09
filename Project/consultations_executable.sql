@@ -32,7 +32,7 @@ SELECT DISTINCT commune FROM stations ORDER BY commune;
 CALL info_station_commune('Talence');
 
 /** CLASSEMENT STATIONS D'UNE COMMUNE EN FONCTION NOMBRE DE VELOS **/
-CALL info_station_commune('Talence');
+CALL rank_station_commune('Talence');
 
 /** DISTANCE ENTRE DEUX STATIONS **/
 CALL dist_between_2_stations(1,3);

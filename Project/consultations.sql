@@ -33,7 +33,7 @@ SELECT DISTINCT commune FROM stations ORDER BY commune;
 CALL info_station_commune(p_commune VARCHAR(100));
 
 /** CLASSEMENT STATIONS D'UNE COMMUNE EN FONCTION NOMBRE DE VELOS **/
-CALL info_station_commune(p_commune VARCHAR(100));
+CALL rank_station_commune(p_commune VARCHAR(100));
 
 /** DISTANCE ENTRE DEUX STATIONS **/
 CALL dist_between_2_stations(p_id_station INT, p_id_stationbis INT);
