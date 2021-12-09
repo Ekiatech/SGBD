@@ -14,6 +14,9 @@ Ce projet s'est déroulé durant 3 semaines par équipe de 3.
 Pour accèder à la BDD avec une interface dynamique, veuillez vous rendre
 sur : https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/projet_sgbd.php
 
+Avant, il faut créer la base de donénes et insérer des données : https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/creation_base.php
+Et pour la supprimer : https://cdeplanne001.vvvpedago.enseirb-matmeca.fr/tmp/suppression_base.php
+
 ## INSTALLATION
 
 Pour le projet, le SGBD choisi est MySQL.
