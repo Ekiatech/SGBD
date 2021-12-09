@@ -176,7 +176,7 @@ SELECT SUM(kilometrage_parcouru), id_adherent, years from dates_utilisations WHE
 END |
 DELIMITER ;
 
-/** NOMBRE HEURE PARCOURUES PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
+/** NOMBRE MINUTES PARCOURUES PAR ADHERENTS SEMAINE/MOIS/ANNEE **/
 DELIMITER |
 CREATE PROCEDURE nbr_h_adh_annee (IN p_id_adherent INT)
 BEGIN

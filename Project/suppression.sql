@@ -12,12 +12,12 @@ ALTER TABLE etre_eloigne DROP FOREIGN KEY fk_etre_eloigne_station;
 ALTER TABLE etre_eloigne DROP FOREIGN KEY fk_etre_eloigne_stationbis;
 
 /** SUPPRESSION TABLES **/
-TRUNCATE TABLE velos;
-TRUNCATE TABLE stations;
-TRUNCATE TABLE utilisations;
-TRUNCATE TABLE adherents;
-TRUNCATE TABLE personnes;
-TRUNCATE TABLE etre_eloigne;
+DROP TABLE velos;
+DROP TABLE stations;
+DROP TABLE utilisations;
+DROP TABLE adherents;
+DROP TABLE personnes;
+DROP TABLE etre_eloigne;
 
 /** SUPPRESSION DE LA BASE DE DONNEE PROJECT_SQL SI EXISTANTE **/
 

@@ -44,6 +44,9 @@ DROP PROCEDURE IF EXISTS ajout_velo;
 DROP PROCEDURE IF EXISTS suppression_velo;
 DROP PROCEDURE IF EXISTS fin_adhesion;
 DROP PROCEDURE IF EXISTS deplacement_velo;
+DROP PROCEDURE IF EXISTS suppression_adherent;
+DROP PROCEDURE IF EXISTS recharge_batterie;
+DROP PROCEDURE IF EXISTS rank_station_commune;
 
 
 
